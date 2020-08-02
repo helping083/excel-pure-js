@@ -1,0 +1,34 @@
+{
+  "name": "excel-pure",
+  "version": "1.0.0",
+  "description": "pure js excel app",
+  "main": "webpack.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack",
+    "build": "webpack --mode production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/helping083/excel-pure-js.git"
+  },
+  "keywords": [
+    "js",
+    "excel"
+  ],
+  "author": "o.voyt",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/helping083/excel-pure-js/issues"
+  },
+  "homepage": "https://github.com/helping083/excel-pure-js#readme",
+  "private": true,
+  "devDependencies": {
+    "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^6.0.3",
+    "html-webpack-plugin": "^4.3.0",
+    "mini-css-extract-plugin": "^0.9.0",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12"
+  }
+}
