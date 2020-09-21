@@ -14,7 +14,9 @@
   },
   "keywords": [
     "js",
-    "excel"
+    "excel",
+    "oop",
+    "patterns"
   ],
   "author": "o.voyt",
   "license": "ISC",
