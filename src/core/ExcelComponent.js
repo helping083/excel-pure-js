@@ -26,7 +26,13 @@ export class ExcelComponent extends DomListener {
   * inits listeners by invoking initDomListener function from the parent class
   */
   init() {
-    console.log('init')
     this.initDomListeners();
+  }
+  /**
+   *@return {void}
+   *removes dom listener by invoking removeDomlistener from the parent class
+  */
+  destroy() {
+    this.removeDomListeners();
   }
 }
