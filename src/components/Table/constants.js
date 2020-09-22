@@ -1,4 +1,8 @@
 export const TABLE = {
+  CODES: {
+    A: 65,
+    Z: 90,
+  },
   tableHTML: `
     <div class="row">
       <div class="row-info"></div>
