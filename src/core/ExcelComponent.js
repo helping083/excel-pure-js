@@ -1,10 +1,17 @@
 import {DomListener} from '@core/DomListener';
 
 /**
- * @abstract
- * abstract class for creating a component
+ * parent class for creating a component which contains methods for
+ * creating a markup and adding listeners
  */
 export class ExcelComponent extends DomListener {
+  /**
+  * @param {string} $root selector
+  * @param {object} options options for working with dom
+  */
+  constructor($root, options={}) {
+    super($root, options.listeners)
+  }
   /**
   * @abstract
   * @return {string}
@@ -12,5 +19,12 @@ export class ExcelComponent extends DomListener {
   */
   toHTML() {
     return '';
+  }
+  /**
+  * @return {void}
+  * inits listeners by invoking initDomListener function from the parent class
+  */
+  init() {
+    this.initDomListeners();
   }
 }
