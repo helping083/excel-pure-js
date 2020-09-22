@@ -32,6 +32,22 @@ class DOMBuilder {
     return this
   }
   /**
+  * @param {string} eventType
+  * @param {function} cb
+  * @return {void}
+  * inits listeners by invoking initDomListener function from the parent class
+  */
+  on(eventType, cb) {
+    this.selector.addEventListener(eventType, cb);
+  }
+  /**
+  * @param {string} eventType
+  * @param {function} cb
+   */
+  off(eventType, cb) {
+    this.selector.removeEventListener(eventType, cb)
+  }
+  /**
   * @param {node} node
   * @return {void}
   * appends node to the selector
@@ -66,4 +82,9 @@ $.create = (tagname, classes='') => {
     htmlEl.classList.add(classes);
   }
   return $(htmlEl);
+}
+
+$.event = (tag, name, cb) =>{
+  const {selector} = $(tag)
+  selector.addEventListener(name, cb);
 }

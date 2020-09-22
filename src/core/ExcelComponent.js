@@ -11,6 +11,7 @@ export class ExcelComponent extends DomListener {
   */
   constructor($root, options={}) {
     super($root, options.listeners)
+    this.name = options.name;
   }
   /**
   * @abstract
@@ -25,6 +26,7 @@ export class ExcelComponent extends DomListener {
   * inits listeners by invoking initDomListener function from the parent class
   */
   init() {
+    console.log('init')
     this.initDomListeners();
   }
 }
