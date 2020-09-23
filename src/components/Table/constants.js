@@ -1,4 +1,9 @@
 export const TABLE = {
+  name: 'Table',
+  dataResize: {
+    ROW: 'row',
+    COL: 'col',
+  },
   CODES: {
     A: 65,
     Z: 90,

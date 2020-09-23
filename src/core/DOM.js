@@ -11,6 +11,7 @@ class DOMBuilder {
     document.querySelector(selector) :
     selector
   }
+
   /**
   * @param {string} markup html markup.
   * @return {String|HTMLElement} html
@@ -23,6 +24,7 @@ class DOMBuilder {
     }
     return this.selector.outerHTML.trim();
   }
+
   /**
   * @return {void}
   * returns clears markup
@@ -31,6 +33,7 @@ class DOMBuilder {
     this.html('');
     return this
   }
+
   /**
   * @param {string} eventType
   * @param {function} cb
@@ -40,12 +43,62 @@ class DOMBuilder {
   on(eventType, cb) {
     this.selector.addEventListener(eventType, cb);
   }
+
   /**
   * @param {string} eventType
   * @param {function} cb
    */
   off(eventType, cb) {
     this.selector.removeEventListener(eventType, cb)
+  }
+
+  /**
+  * @param {string} el
+  * @return {HTMLElement}
+   */
+  closest(el) {
+    return $(this.selector.closest(el))
+  }
+
+  /**
+  * @return {object}
+   */
+  getCoords() {
+    return this.selector.getBoundingClientRect();
+  }
+
+  /**
+  * @param {string} el
+  * @return {Array}
+  */
+  findAll(el) {
+    return this.selector.querySelectorAll(el);
+  }
+
+  /**
+  * @return {object}
+  * appends node to the selector
+  */
+  get data() {
+    return this.selector.dataset;
+  }
+  /**
+  * @param {object} styles
+  * @return {object}
+  * appends css to the selector
+  */
+  css(styles = {}) {
+    const {selector} = this
+    // dangeorus because can work with porperties from the proto
+    // for (const key in styles) {
+    //   if (styles.hasOwnProperty[key]) {
+    //     selector.style[key] = styles[key]
+    //   }
+    // }
+    Object.keys(styles).forEach(key=>{
+      selector.style[key] = styles[key]
+    })
+    return $(selector);
   }
   /**
   * @param {node} node

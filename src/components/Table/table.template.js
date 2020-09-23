@@ -1,23 +1,27 @@
 import {TABLE} from './constants';
 /**
+ * @param {any} _
+ * @param {number} col
  * @return {string}
  * generates cell markup
  */
-function createCell() {
+function createCell(_, col) {
   return `
-  <div class="cell" contenteditable=""></div>
+  <div class="cell" contenteditable="" data-col="${col}"></div>
   `
 }
 
 /**
  * @param {any} col
+ * @param {number} index
  * @return {string}
  * generates column markup
  */
-function createCol(col) {
+function createCol(col, index) {
   return `
-    <div class="column">
+    <div class="column" data-type="resizable" data-col="${index}">
       ${col}
+      <div class="col-resize" data-resize=${TABLE.dataResize.COL}></div>
     </div>
   `
 }
@@ -29,9 +33,15 @@ function createCol(col) {
  * generates row markup
  */
 function createRow(index, content) {
+  const resizer = index ?
+    `<div class="row-resize" data-resize=${TABLE.dataResize.ROW}></div>` :
+    ''
   return `
-     <div class="row">
-      <div class="row-info">${index ? index : ''}</div>
+     <div class="row" data-type="resizable">
+      <div class="row-info">
+        ${index ? index : ''}
+        ${resizer}
+      </div>
       <div class="row-data">${content}</div>
      </div>
   `
