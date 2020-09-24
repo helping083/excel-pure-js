@@ -3,6 +3,7 @@ import {TABLE} from './constants';
 import {createTable} from './table.template';
 import {resizeHandler} from './controllers';
 import {shouldResize} from './table.utils';
+import TableSelection from './TableSelection';
 // import {$} from '@core/dom';
 /**
  *
@@ -26,6 +27,14 @@ class Table extends ExcelComponent {
   */
   toHTML() {
     return createTable(100)
+  }
+  // conponentDidMount
+  /**
+  * @override
+  */
+  init() {
+    super.init();
+    this.selection = new TableSelection()
   }
 
   /**
