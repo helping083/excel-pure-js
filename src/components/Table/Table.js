@@ -1,7 +1,9 @@
 import {ExcelComponent} from '@core/ExcelComponent';
 import {TABLE} from './constants';
 import {createTable} from './table.template';
-import {$} from '@core/dom';
+import {resizeHandler} from './controllers';
+import {shouldResize} from './table.utils';
+// import {$} from '@core/dom';
 /**
  *
  * table component
@@ -38,31 +40,8 @@ class Table extends ExcelComponent {
    * @return {void}
   */
   onMousedown(e) {
-    if (e.target.dataset.resize) {
-      console.log(e.target.dataset.resize);
-      const $resizer = $(e.target);
-      const $parent = $resizer.closest('[data-type="resizable"]')
-      const coords = $parent.getCoords();
-      const {data} = $parent;
-      const type = $resizer.data.resize;
-      const cells = this.$root.findAll(`[data-col="${data.col}"]`);
-
-      document.onmousemove = event => {
-        if (type === TABLE.dataResize.COL) {
-          const delta = event.pageX - coords.right;
-          const value = coords.width + delta;
-          $parent.css({width: value + 'px'});
-          cells.forEach(el=>el.style.width=value+'px');
-        } else {
-          const delta = event.pageY - coords.bottom;
-          const value = coords.height + delta;
-          // selector.style.height = ;
-          $parent.css({height: value + 'px'})
-        }
-      }
-      document.onmouseup = () => {
-        document.onmousemove = null;
-      }
+    if (shouldResize(e)) {
+      resizeHandler(this.$root, e);
     }
   }
 

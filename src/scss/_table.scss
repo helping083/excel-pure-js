@@ -60,12 +60,13 @@
     right: 0;
     opacity: 0;
     background: $primary-color;
+    z-index: 1000;
   }
   .col-resize {
     top: 0;
     width: 4px;
     &:hover {
-      opacity: 1;
+      opacity: 1 !important;
       cursor: col-resize;
     }
   }
@@ -73,7 +74,7 @@
     left: 0;
     height: 4px;
     &:hover {
-      opacity: 1;
+      opacity: 1 !important;
       cursor: row-resize;
     }
   }
