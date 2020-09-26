@@ -37,11 +37,12 @@ class DOMBuilder {
   /**
   * @param {string} eventType
   * @param {function} cb
+  * @param {boolean} isBubble
   * @return {void}
   * inits listeners by invoking initDomListener function from the parent class
   */
-  on(eventType, cb) {
-    this.selector.addEventListener(eventType, cb);
+  on(eventType, cb, isBubble = true) {
+    this.selector.addEventListener(eventType, cb, isBubble);
   }
 
   /**
@@ -66,7 +67,14 @@ class DOMBuilder {
   getCoords() {
     return this.selector.getBoundingClientRect();
   }
-
+  /**
+  * @param {string} $el
+  * @return {this}
+  * returns dom class instance with el selector
+  */
+  find($el) {
+    return $(this.selector.querySelector($el));
+  }
   /**
   * @param {string} el
   * @return {Array}
@@ -100,6 +108,27 @@ class DOMBuilder {
     })
     return $(selector);
   }
+
+  /**
+   *
+   * @param {string} className
+   * @return {void}
+   * adds a classlist to the selector
+   */
+  addClass(className) {
+    this.selector.classList.add(className);
+  }
+
+  /**
+   *
+   * @param {string} className
+   * @return {void}
+   * removes a class to the selector
+   */
+  removeClass(className) {
+    this.selector.classList.remove(className);
+  }
+
   /**
   * @param {node} node
   * @return {void}
@@ -118,8 +147,39 @@ class DOMBuilder {
     }
     return this;
   }
-}
 
+  /**
+  *
+  * @return {this}
+  */
+  focus() {
+    this.selector.focus();
+    return this;
+  }
+
+  /**
+ *
+ * @param {boolean} parse
+ * @return {object}
+ */
+  id(parse) {
+    if (parse) {
+      const parsed = this.id().split(':');
+      return {
+        row: +parsed[0],
+        col: +parsed[1],
+      }
+    }
+    return this.data.id
+  }
+
+  /**
+   * @return {void}
+  */
+  remove() {
+    this.selector.remove()
+  }
+}
 /**
  * util function for init a DOM class instance and wrap him into $();
  * @param {string} selector

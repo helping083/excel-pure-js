@@ -12,7 +12,9 @@ export class ExcelComponent extends DomListener {
   constructor($root, options={}) {
     super($root, options.listeners)
     this.name = options.name;
+    this.prepare()
   }
+
   /**
   * @abstract
   * @return {string}
@@ -21,6 +23,7 @@ export class ExcelComponent extends DomListener {
   toHTML() {
     return '';
   }
+
   /**
   * @return {void}
   * inits listeners by invoking initDomListener function from the parent class
@@ -28,6 +31,15 @@ export class ExcelComponent extends DomListener {
   init() {
     this.initDomListeners();
   }
+
+  /**
+  * @abstract
+  * @return {void}
+  */
+  prepare() {
+
+  }
+
   /**
    *@return {void}
    *removes dom listener by invoking removeDomlistener from the parent class
