@@ -4,9 +4,21 @@ export const TABLE = {
     ROW: 'row',
     COL: 'col',
   },
+  type: {
+    CELL: 'cell',
+    ROW: 'row',
+  },
   CODES: {
     A: 65,
     Z: 90,
+  },
+  tableActionCodes: {
+    ArrowLeft: 'ArrowLeft',
+    ArrowRight: 'ArrowRight',
+    ArrowDown: 'ArrowDown',
+    ArrowUp: 'ArrowUp',
+    Enter: 'Enter',
+    Tab: 'Tab',
   },
   tableHTML: `
     <div class="row">

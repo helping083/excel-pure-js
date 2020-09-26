@@ -1,16 +1,31 @@
 import {TABLE} from './constants';
+// /**
+//  * @param {any} _
+//  * @param {number} col
+//  * @return {string}
+//  * generates cell markup
+//  */
+// function createCell(_, col) {
+//   return `
+//   <div class="cell" contenteditable="" data-col="${col}"></div>
+//   `
+// }
 /**
- * @param {any} _
- * @param {number} col
- * @return {string}
- * generates cell markup
- */
-function createCell(_, col) {
-  return `
-  <div class="cell" contenteditable="" data-col="${col}"></div>
+* @param {number} row
+* @return {functon}
+*/
+function toCell(row) {
+  return function(_, col) {
+    return `
+  <div 
+    class="cell" 
+    contenteditable="" 
+    data-type="${TABLE.type.CELL}"
+    data-col="${col}" 
+    data-id="${row}:${col}"></div>
   `
+  }
 }
-
 /**
  * @param {any} col
  * @param {number} index
@@ -59,12 +74,12 @@ function toChar(_, index) {
 
 /**
  * @param {number} rowsCount
- * @param {number} columnCount
+ * @param {number} colsCount
  * @return {void}
  * generates table markup
  */
-export function createTable(rowsCount = 10) {
-  const colsCount = TABLE.CODES.Z - TABLE.CODES.A + 1;
+export function createTable(rowsCount = 10, colsCount) {
+  // const colsCount = TABLE.CODES.Z - TABLE.CODES.A + 1;
   const rows = [];
   const cols = new Array(colsCount)
       .fill('')
@@ -77,10 +92,12 @@ export function createTable(rowsCount = 10) {
   for (let i = 0; i < rowsCount; i++) {
     const cells = new Array(colsCount)
         .fill('')
-        .map(createCell)
+        // .map(createCell)
+        .map(toCell(i))
         .join('')
     rows.push(createRow(i + 1, cells))
   }
+  console.log(colsCount);
   return rows.join('')
 }
 

@@ -1,10 +1,11 @@
 import {ExcelComponent} from '@core/ExcelComponent';
 import {TABLE} from './constants';
 import {createTable} from './table.template';
-import {resizeHandler} from './controllers';
-import {shouldResize} from './table.utils';
+import {resizeHandler, handleArrowPress} from './controllers';
+import {shouldResize, isCell, isShiftKey} from './table.utils';
 import TableSelection from './TableSelection';
-// import {$} from '@core/dom';
+import SelectImplementation from './SelectImplementation';
+import {$} from '@core/dom';
 /**
  *
  * table component
@@ -16,9 +17,11 @@ class Table extends ExcelComponent {
   */
   constructor($root) {
     super($root, {
-      listeners: ['click', 'mousedown', 'mousemove', 'mouseup'],
+      listeners: ['click', 'mousedown', 'mousemove', 'mouseup', 'keydown'],
       name: TABLE.name,
     })
+    this.colsCount = TABLE.CODES.Z - TABLE.CODES.A + 1;
+    this.rowsCount = 100;
   }
 
   /**
@@ -26,22 +29,39 @@ class Table extends ExcelComponent {
   * @return {string} return html template
   */
   toHTML() {
-    return createTable(100)
+    return createTable(this.rowsCount, this.colsCount);
   }
+
+  /**
+  *@override
+  */
+  prepare() {
+    this.selection = new TableSelection(this.$root);
+    this.selectImplementation =
+      new SelectImplementation(this.$root, this.selection, Table.className);
+  }
+
   // conponentDidMount
   /**
   * @override
   */
   init() {
     super.init();
-    this.selection = new TableSelection()
+    const cell = this.$root.find('[data-id="0:0"]');
+    cell.focus();
+    this.selection.select(cell)
   }
 
   /**
+   * @param {event} e
    * @return {void}
    */
-  onClick() {
-    console.log('click')
+  onClick(e) {
+    // if (isSelectable(e)) {
+    //   const {id} = e.target.dataset
+    //   const cell = this.$root.find(`[data-id="${id}"]`);
+    //   this.selection.select(cell)
+    // }
   }
 
   /**
@@ -50,7 +70,15 @@ class Table extends ExcelComponent {
   */
   onMousedown(e) {
     if (shouldResize(e)) {
-      resizeHandler(this.$root, e);
+      resizeHandler(this.$root, e, e.pageY);
+    } else if (isCell(e)) {
+      const $target = $(e.target);
+
+      if (isShiftKey(e)) {
+        this.selectImplementation.implementMultipleSelect(e);
+      } else if (!isShiftKey(e)) {
+        this.selection.select($target);
+      }
     }
   }
 
@@ -66,6 +94,17 @@ class Table extends ExcelComponent {
    * @return {void}
   */
   onMouseup(e) {
+    document.onmousemove = null;
+  }
+
+  /**
+  *@param  {event} e
+  *@return {void}
+  */
+  onKeydown(e) {
+    // eslint-disable-next-line max-len
+    handleArrowPress(this.$root, e, this.selection, this.colsCount, this.rowsCount);
   }
 }
+
 export default Table;
