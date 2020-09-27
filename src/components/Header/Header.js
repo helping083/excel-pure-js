@@ -7,6 +7,15 @@ import {$} from '@core/dom';
  */
 class Header extends ExcelComponent {
   static className = HEADER.className;
+
+  /**
+  * @param {string} $root selector where this will be appended
+  * @param {any} options
+  */
+  constructor($root, options) {
+    super($root, {name: 'header', ...options})
+  }
+
   /**
   * @override
   * @return {string} return html template
@@ -14,17 +23,20 @@ class Header extends ExcelComponent {
   toHTML() {
     return HEADER.headerHtml;
   }
+
   /**
-  * make html template reusable for others components
+  * makes html template reusable for others components
   * @return {string} return html template
   */
   static divide() {
     return `<div class=${HEADER.className}>${HEADER.headerHtml}</div>`
   }
+
   test = () => {
     // eslint-disable-next-line no-invalid-this
     console.log(this)
   }
+
   /**
   * make html template reusable for others components
   * @return {void} return html template

@@ -14,11 +14,14 @@ class Table extends ExcelComponent {
   static className = TABLE.className;
   /**
   * @param {string} $root selector where this will be appended
+  * @param {any} options
   */
-  constructor($root) {
+  constructor($root, options) {
     super($root, {
-      listeners: ['click', 'mousedown', 'mousemove', 'mouseup', 'keydown'],
+      listeners: ['click',
+        'mousedown', 'mousemove', 'mouseup', 'keydown', 'dragstart'],
       name: TABLE.name,
+      ...options,
     })
     this.colsCount = TABLE.CODES.Z - TABLE.CODES.A + 1;
     this.rowsCount = 100;
@@ -50,6 +53,10 @@ class Table extends ExcelComponent {
     const cell = this.$root.find('[data-id="0:0"]');
     cell.focus();
     this.selection.select(cell)
+    this.$on('formula:input', (text)=>{
+      this.selection.current.text(text);
+      console.log(text);
+    })
   }
 
   /**
@@ -98,12 +105,20 @@ class Table extends ExcelComponent {
   }
 
   /**
+  *@param  {event} evt
+  *@return {void}
+  */
+  onKeydown(evt) {
+    // eslint-disable-next-line max-len
+    handleArrowPress(this.$root, evt, this.selection, this.colsCount, this.rowsCount);
+  }
+
+  /**
   *@param  {event} e
   *@return {void}
   */
-  onKeydown(e) {
-    // eslint-disable-next-line max-len
-    handleArrowPress(this.$root, e, this.selection, this.colsCount, this.rowsCount);
+  onDragstart(e) {
+    e.preventDefault();
   }
 }
 

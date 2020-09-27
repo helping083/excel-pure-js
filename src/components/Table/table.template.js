@@ -19,7 +19,7 @@ function toCell(row) {
     return `
   <div 
     class="cell" 
-    contenteditable="" 
+    contenteditable="true" 
     data-type="${TABLE.type.CELL}"
     data-col="${col}" 
     data-id="${row}:${col}"></div>
@@ -34,7 +34,11 @@ function toCell(row) {
  */
 function createCol(col, index) {
   return `
-    <div class="column" data-type="resizable" data-col="${index}">
+    <div 
+      class="column" 
+      data-type="resizable" 
+      draggable="false" 
+      data-col="${index}">
       ${col}
       <div class="col-resize" data-resize=${TABLE.dataResize.COL}></div>
     </div>
@@ -49,8 +53,7 @@ function createCol(col, index) {
  */
 function createRow(index, content) {
   const resizer = index ?
-    `<div class="row-resize" data-resize=${TABLE.dataResize.ROW}></div>` :
-    ''
+    `<div class="row-resize" data-resize=${TABLE.dataResize.ROW}></div>` : '';
   return `
      <div class="row" data-type="resizable">
       <div class="row-info">

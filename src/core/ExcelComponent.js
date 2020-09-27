@@ -12,7 +12,9 @@ export class ExcelComponent extends DomListener {
   constructor($root, options={}) {
     super($root, options.listeners)
     this.name = options.name;
-    this.prepare()
+    this.emitter = options.emitter;
+    this.prepare();
+    this.unsubscribers = [];
   }
 
   /**
@@ -26,6 +28,7 @@ export class ExcelComponent extends DomListener {
 
   /**
   * @return {void}
+  * init hook
   * inits listeners by invoking initDomListener function from the parent class
   */
   init() {
@@ -35,6 +38,7 @@ export class ExcelComponent extends DomListener {
   /**
   * @abstract
   * @return {void}
+  * before init hook
   */
   prepare() {
 
@@ -46,5 +50,27 @@ export class ExcelComponent extends DomListener {
   */
   destroy() {
     this.removeDomListeners();
+    this.unsubscribers.forEach(unsub => unsub())
+  }
+
+  /**
+  * facade interface for emmiters
+  * @param {event} event
+  * @param {object} options
+  * @return {void}
+  */
+  $emit(event, ...args) {
+    this.emitter.emit(event, ...args);
+  }
+
+  /**
+   *
+   * @param {event} event
+   * @param {function} fn
+   * subscribes to events based on the observable pattern
+  */
+  $on(event, fn) {
+    const unsub = this.emitter.subscribe(event, fn);
+    this.unsubscribers.push(unsub);
   }
 }

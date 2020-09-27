@@ -149,6 +149,14 @@ class DOMBuilder {
   }
 
   /**
+   * @param {string} text
+   * @return {void}
+   */
+  text(text) {
+    this.selector.innerHTML = text;
+  }
+
+  /**
   *
   * @return {this}
   */
