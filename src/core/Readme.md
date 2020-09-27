@@ -1,0 +1,1 @@
+Core classes which is responsible for functionallity of the app
