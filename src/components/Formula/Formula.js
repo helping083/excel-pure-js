@@ -7,15 +7,19 @@ import {FORMULA} from './constants';
  */
 class Formula extends ExcelComponent {
   static className = FORMULA.className;
+
   /**
   * @param {string} $root selector where this will be appended
+  * @param {any} options
   */
-  constructor($root) {
+  constructor($root, options) {
     super($root, {
       name: FORMULA.name,
       listeners: ['input'],
+      ...options,
     })
   }
+
   /**
   * @override
   * @return {string} return html template
@@ -23,12 +27,15 @@ class Formula extends ExcelComponent {
   toHTML() {
     return FORMULA.formulaHTML
   }
+
   /**
-  * @param  {Event} e event object
-  * @return {void} input listener
-  */
-  onInput(e) {
-    console.log('onInput excel')
+   * input listener
+   * @param {event} event
+   * @return {void}
+   */
+  onInput(event) {
+    const text = event.target.textContent.trim();
+    this.$emit('formula:input', text);
   }
   // /**
   // * @param  {Event} e event object
