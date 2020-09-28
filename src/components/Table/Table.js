@@ -1,7 +1,7 @@
 import {ExcelComponent} from '@core/ExcelComponent';
 import {TABLE} from './constants';
 import {createTable} from './table.template';
-import {resizeHandler} from './controllers';
+import {resizeHandler, handleArrowPress} from './controllers';
 import {shouldResize, isCell, isShiftKey} from './table.utils';
 import TableSelection from './TableSelection';
 import SelectImplementation from './SelectImplementation';
@@ -19,7 +19,7 @@ class Table extends ExcelComponent {
   constructor($root, options) {
     super($root, {
       listeners: ['click',
-        'mousedown', 'mousemove', 'mouseup', 'keydown', 'dragstart'],
+        'mousedown', 'mousemove', 'mouseup', 'keydown', 'dragstart', 'input'],
       name: TABLE.name,
       ...options,
     })
@@ -61,7 +61,15 @@ class Table extends ExcelComponent {
   initCellSelection() {
     const cell = this.$root.find('[data-id="0:0"]');
     cell.focus();
-    this.selection.select(cell)
+    this.selectCell(cell);
+  }
+
+  /**
+   * @param {HTMLElement} $cell
+   */
+  selectCell($cell) {
+    this.selection.select($cell);
+    this.$emit('table:select', $cell);
   }
 
   /**
@@ -129,7 +137,7 @@ class Table extends ExcelComponent {
   */
   onKeydown(evt) {
     // eslint-disable-next-line max-len
-    // handleArrowPress(this.$root, evt, this.selection, this.colsCount, this.rowsCount, this.emit);
+    handleArrowPress(this.$root, evt, this.selection, this.colsCount, this.rowsCount, this.emit);
   }
 
   /**
@@ -138,6 +146,14 @@ class Table extends ExcelComponent {
   */
   onDragstart(e) {
     e.preventDefault();
+  }
+
+  /**
+  *@param  {event} e
+  *@return {void}
+  */
+  onInput(e) {
+    this.$emit('table:input', $(e.target));
   }
 }
 

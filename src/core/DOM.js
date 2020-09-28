@@ -199,6 +199,7 @@ class DOMBuilder {
     this.selector.remove()
   }
 }
+
 /**
  * util function for init a DOM class instance and wrap him into $();
  * @param {string} selector
