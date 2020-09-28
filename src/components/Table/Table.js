@@ -13,13 +13,13 @@ import {$} from '@core/dom';
 class Table extends ExcelComponent {
   static className = TABLE.className;
   /**
-  * @param {string} $root selector where this will be appended
+  * @param {string} $root selector where {this} will be appended
   * @param {any} options
   */
   constructor($root, options) {
     super($root, {
       listeners: ['click',
-        'mousedown', 'mousemove', 'mouseup', 'keydown', 'dragstart'],
+        'mousedown', 'mousemove', 'mouseup', 'keydown', 'dragstart', 'input'],
       name: TABLE.name,
       ...options,
     })
@@ -50,13 +50,40 @@ class Table extends ExcelComponent {
   */
   init() {
     super.init();
+    this.initCellSelection();
+    this.initSubscriptions();
+  }
+
+  /**
+   * @return {void}
+   * selects first cell and sets the active class
+   */
+  initCellSelection() {
     const cell = this.$root.find('[data-id="0:0"]');
     cell.focus();
-    this.selection.select(cell)
+    this.selectCell(cell);
+  }
+
+  /**
+   * @param {HTMLElement} $cell
+   */
+  selectCell($cell) {
+    this.selection.select($cell);
+    this.$emit('table:select', $cell);
+  }
+
+  /**
+   * @return {void}
+   * subscribes to events emmiters
+  */
+  initSubscriptions() {
     this.$on('formula:input', (text)=>{
-      this.selection.current.text(text);
-      console.log(text);
+      this.selection.current.text = text;
     })
+    this.$on('formula:enter', () => {
+      this.selection.current.focus();
+    });
+    this.emit = this.$emit.bind(this);
   }
 
   /**
@@ -110,7 +137,7 @@ class Table extends ExcelComponent {
   */
   onKeydown(evt) {
     // eslint-disable-next-line max-len
-    handleArrowPress(this.$root, evt, this.selection, this.colsCount, this.rowsCount);
+    handleArrowPress(this.$root, evt, this.selection, this.colsCount, this.rowsCount, this.emit);
   }
 
   /**
@@ -119,6 +146,14 @@ class Table extends ExcelComponent {
   */
   onDragstart(e) {
     e.preventDefault();
+  }
+
+  /**
+  *@param  {event} e
+  *@return {void}
+  */
+  onInput(e) {
+    this.$emit('table:input', $(e.target));
   }
 }
 
