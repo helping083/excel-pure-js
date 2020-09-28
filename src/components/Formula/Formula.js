@@ -15,7 +15,7 @@ class Formula extends ExcelComponent {
   constructor($root, options) {
     super($root, {
       name: FORMULA.name,
-      listeners: ['input'],
+      listeners: ['input', 'keydown'],
       ...options,
     })
   }
@@ -29,6 +29,17 @@ class Formula extends ExcelComponent {
   }
 
   /**
+  * @override
+  */
+  init() {
+    super.init();
+    this.$formula = this.$root.find('#formula');
+    this.$on('table:select', ($cell)=>{
+      this.$formula.text = $cell.text;
+    })
+  }
+
+  /**
    * input listener
    * @param {event} event
    * @return {void}
@@ -37,6 +48,19 @@ class Formula extends ExcelComponent {
     const text = event.target.textContent.trim();
     this.$emit('formula:input', text);
   }
+
+  /**
+   * keydown listener
+   * @param {event} event
+   * @return {void}
+   */
+  onKeydown(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      this.$emit('formula:enter');
+    }
+  }
+
   // /**
   // * @param  {Event} e event object
   // * @return {void} input listener

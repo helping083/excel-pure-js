@@ -91,17 +91,19 @@ function closest(el, fn) {
  * @param {object} tableSelection class for setting active cell
  * @param {number} colsCount
  * @param {number} rowsCount
+ * @param {object} emitter
  * @return {void}
  * function is responsible for changing active cell on key press
 */
 export function handleArrowPress(
-    $root, e, tableSelection, colsCount, rowsCount
+    $root, e, tableSelection, colsCount, rowsCount, emitter
 ) {
   if (TABLE.tableActionCodes[e.code] && !e.shiftKey) {
     e.preventDefault()
     const {col, row} = tableSelection.current.id(true);
     const $next = $root.find(nextSelector(e.code, col, row))
     tableSelection.select($next);
+    emitter('table:select', $next);
   }
 }
 

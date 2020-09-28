@@ -63,10 +63,12 @@ class DOMBuilder {
 
   /**
   * @return {object}
+  * returns top/bottom/width/height/left/right of the selector
    */
   getCoords() {
     return this.selector.getBoundingClientRect();
   }
+
   /**
   * @param {string} $el
   * @return {this}
@@ -75,9 +77,11 @@ class DOMBuilder {
   find($el) {
     return $(this.selector.querySelector($el));
   }
+
   /**
   * @param {string} el
   * @return {Array}
+  * returns all dom nodes found by the selector
   */
   findAll(el) {
     return this.selector.querySelectorAll(el);
@@ -85,11 +89,12 @@ class DOMBuilder {
 
   /**
   * @return {object}
-  * appends node to the selector
+  * returns data properties of the selector
   */
   get data() {
     return this.selector.dataset;
   }
+
   /**
   * @param {object} styles
   * @return {object}
@@ -152,10 +157,16 @@ class DOMBuilder {
    * @param {string} text
    * @return {void}
    */
-  text(text) {
+  set text(text) {
     this.selector.innerHTML = text;
   }
 
+  /**
+ * @return {string}
+ */
+  get text() {
+    return this.selector.innerHTML;
+  }
   /**
   *
   * @return {this}
