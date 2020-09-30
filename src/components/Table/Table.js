@@ -6,6 +6,7 @@ import {shouldResize, isCell, isShiftKey} from './table.utils';
 import TableSelection from './TableSelection';
 import SelectImplementation from './SelectImplementation';
 import {$} from '@core/dom';
+import * as actions from '@/store/actions'
 /**
  *
  * table component
@@ -13,7 +14,7 @@ import {$} from '@core/dom';
 class Table extends ExcelComponent {
   static className = TABLE.className;
   /**
-  * @param {string} $root selector where {this} will be appended
+  * @param {string} $root selector where the component will be appended
   * @param {any} options
   */
   constructor($root, options) {
@@ -50,8 +51,8 @@ class Table extends ExcelComponent {
   */
   init() {
     super.init();
-    this.initCellSelection();
     this.initSubscriptions();
+    this.initCellSelection();
   }
 
   /**
@@ -70,11 +71,12 @@ class Table extends ExcelComponent {
   selectCell($cell) {
     this.selection.select($cell);
     this.$emit('table:select', $cell);
+    this.$dispatch({type: 'TEST'})
   }
 
   /**
    * @return {void}
-   * subscribes to events emmiters
+   * subscribes for events emmiters
   */
   initSubscriptions() {
     this.$on('formula:input', (text)=>{
@@ -84,6 +86,9 @@ class Table extends ExcelComponent {
       this.selection.current.focus();
     });
     this.emit = this.$emit.bind(this);
+    this.$subscribe(state => {
+      console.log('table state', state);
+    })
   }
 
   /**
@@ -102,16 +107,29 @@ class Table extends ExcelComponent {
    * @param {event} e
    * @return {void}
   */
+  async resizeTable(e) {
+    try {
+      const data = await resizeHandler(this.$root, e, e.pageY)
+      this.$dispatch(actions.tableResizerAction(data));
+    } catch (error) {
+      console.warn('resize error', error)
+    }
+  }
+
+  /**
+   * @param {event} e
+   * @return {void}
+  */
   onMousedown(e) {
     if (shouldResize(e)) {
-      resizeHandler(this.$root, e, e.pageY);
+      this.resizeTable(e);
     } else if (isCell(e)) {
       const $target = $(e.target);
 
       if (isShiftKey(e)) {
         this.selectImplementation.implementMultipleSelect(e);
       } else if (!isShiftKey(e)) {
-        this.selection.select($target);
+        this.selectCell($target);
       }
     }
   }
