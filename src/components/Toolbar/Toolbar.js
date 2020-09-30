@@ -1,11 +1,13 @@
 import {ExcelComponent} from '@core/ExcelComponent';
 import {TOOLBAR} from './constants';
+
 /**
  *
  * toolbar component
  */
 class Toolbar extends ExcelComponent {
   static className = TOOLBAR.className;
+
   /**
   * @param {string} $root selector where this will be appended
   * @param {any} options
@@ -13,6 +15,7 @@ class Toolbar extends ExcelComponent {
   constructor($root, options) {
     super($root, {name: 'toolbar', ...options})
   }
+
   /**
   * @override
   * @return {string} return html template

@@ -12,7 +12,8 @@ export default class Excel {
   constructor(selector, options ) {
     this.$el = $(selector);
     this.components = options.components || []
-    this.emmiter = new Emitter()
+    this.emmiter = new Emitter();
+    this.store = options.store;
   }
 
   /**
@@ -22,7 +23,10 @@ export default class Excel {
   getRoot() {
     const $root = $.create('div', 'excel');
     // caching options
-    const componentOptions = {'emitter': this.emmiter};
+    const componentOptions = {
+      'emitter': this.emmiter,
+      'store': this.store,
+    };
 
     // create components instances
     this.components = this.components.map(Component=>{

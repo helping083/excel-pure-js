@@ -1,4 +1,4 @@
-import {TABLE} from './constants';
+import {TABLE, DEFAULT_WIDTH} from './constants';
 // /**
 //  * @param {any} _
 //  * @param {number} col
@@ -11,33 +11,37 @@ import {TABLE} from './constants';
 //   `
 // }
 /**
+* @param {object} state
 * @param {number} row
 * @return {functon}
 */
-function toCell(row) {
+function toCell(state, row) {
   return function(_, col) {
     return `
-  <div 
-    class="cell" 
-    contenteditable="true" 
-    data-type="${TABLE.type.CELL}"
-    data-col="${col}" 
-    data-id="${row}:${col}"></div>
-  `
+    <div 
+      class="cell" 
+      contenteditable="true" 
+      data-type="${TABLE.type.CELL}"
+      style="width: ${getWidth(state.colState, col)}"
+      data-col="${col}" 
+      data-id="${row}:${col}"></div>`
   }
 }
+
 /**
  * @param {any} col
  * @param {number} index
+ * @param {string} width
  * @return {string}
  * generates column markup
  */
-function createCol(col, index) {
+function createCol({col, index, width}) {
   return `
     <div 
       class="column" 
       data-type="resizable" 
-      draggable="false" 
+      draggable="false"
+      style="width:${width}" 
       data-col="${index}">
       ${col}
       <div class="col-resize" data-resize=${TABLE.dataResize.COL}></div>
@@ -76,31 +80,55 @@ function toChar(_, index) {
 }
 
 /**
+ *
+ * @param {object} state
+ * @param {number} index
+ * @return {string}
+ * utils function which calculates a width of a col
+ */
+function getWidth(state, index) {
+  return `${(state[index] || DEFAULT_WIDTH)}px`;
+}
+
+/**
+ * @param {object} state
+ * @return {function}
+ */
+function withWidthFrom(state) {
+  return function(col, index) {
+    return {
+      col, index, width: getWidth(state.colState, index),
+    }
+  }
+}
+
+/**
  * @param {number} rowsCount
  * @param {number} colsCount
+ * @param {object} state app state
  * @return {void}
  * generates table markup
  */
-export function createTable(rowsCount = 10, colsCount) {
+export function createTable(rowsCount = 10, colsCount = 10, state = {}) {
+  console.log('create store', state);
   // const colsCount = TABLE.CODES.Z - TABLE.CODES.A + 1;
   const rows = [];
   const cols = new Array(colsCount)
       .fill('')
       .map(toChar)
+      .map(withWidthFrom(state))
       .map(createCol)
       .join('')
-
 
   rows.push(createRow(null, cols))
   for (let i = 0; i < rowsCount; i++) {
     const cells = new Array(colsCount)
         .fill('')
         // .map(createCell)
-        .map(toCell(i))
+        .map(toCell(state, i))
         .join('')
     rows.push(createRow(i + 1, cells))
   }
-  console.log(colsCount);
   return rows.join('')
 }
 
