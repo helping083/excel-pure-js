@@ -33,7 +33,7 @@ class Table extends ExcelComponent {
   * @return {string} return html template
   */
   toHTML() {
-    return createTable(this.rowsCount, this.colsCount);
+    return createTable(this.rowsCount, this.colsCount, this.store.getState());
   }
 
   /**

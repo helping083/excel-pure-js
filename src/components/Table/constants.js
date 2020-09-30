@@ -24,3 +24,4 @@ export const TABLE = {
   `,
   className: 'excel__table',
 };
+export const DEFAULT_WIDTH = 120;

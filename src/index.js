@@ -10,7 +10,6 @@ import storeCreate from '@core/storeCreate';
 const store = storeCreate(rootReducer, storage('excel-state'), applyMiddleware);
 store.subscribe(state => {
   storage('excel-state', state)
-  console.log('index.js', state);
 })
 
 const excel = new Excel('#app', {

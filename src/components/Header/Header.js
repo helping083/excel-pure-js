@@ -39,6 +39,7 @@ class Header extends ExcelComponent {
 
   /**
   * make html template reusable for others components
+  * @override
   * @return {void} return html template
   */
   init() {
