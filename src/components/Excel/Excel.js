@@ -1,5 +1,7 @@
 import {$} from '@core/dom';
 import Emitter from '@core/emmiter';
+import {StoreSubscriberSingleton} from '@core/StoreSubscriber';
+
 /**
  *
  * class for creating main component
@@ -14,6 +16,7 @@ export default class Excel {
     this.components = options.components || []
     this.emmiter = new Emitter();
     this.store = options.store;
+    this.subscriber = StoreSubscriberSingleton.getInstance(this.store);
   }
 
   /**
@@ -45,6 +48,7 @@ export default class Excel {
    * componentWillUnmount/ngOnDestroy
   */
   destroy() {
+    this.subscriber.unsubscribeFromStore();
     this.components.forEach(component => component.destroy());
   }
 
@@ -54,6 +58,7 @@ export default class Excel {
   */
   render() {
     this.$el.append(this.getRoot());
+    this.subscriber.subsribeComponents(this.components);
     this.components.forEach(component => component.init());
   }
 }

@@ -158,14 +158,14 @@ class DOMBuilder {
    * @return {void}
    */
   set text(text) {
-    this.selector.innerHTML = text;
+    this.selector.textContent = text;
   }
 
   /**
  * @return {string}
  */
   get text() {
-    return this.selector.innerHTML;
+    return this.selector.textContent;
   }
   /**
   *

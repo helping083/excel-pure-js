@@ -71,7 +71,6 @@ class Table extends ExcelComponent {
   selectCell($cell) {
     this.selection.select($cell);
     this.$emit('table:select', $cell);
-    this.$dispatch({type: 'TEST'})
   }
 
   /**
@@ -81,14 +80,12 @@ class Table extends ExcelComponent {
   initSubscriptions() {
     this.$on('formula:input', (text)=>{
       this.selection.current.text = text;
+      this.updateTextInStore(text)
     })
     this.$on('formula:enter', () => {
       this.selection.current.focus();
     });
     this.emit = this.$emit.bind(this);
-    this.$subscribe(state => {
-      console.log('table state', state);
-    })
   }
 
   /**
@@ -167,11 +164,23 @@ class Table extends ExcelComponent {
   }
 
   /**
+   * @param {string} value
+   * @return {void}
+   */
+  updateTextInStore(value) {
+    this.$dispatch(actions.changeText({
+      id: this.selection.current.id(),
+      value,
+    }))
+  }
+
+  /**
   *@param  {event} e
   *@return {void}
   */
   onInput(e) {
-    this.$emit('table:input', $(e.target));
+    // this.$emit('table:input', $(e.target));
+    this.updateTextInStore($(e.target).text);
   }
 }
 

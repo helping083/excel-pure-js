@@ -91,3 +91,16 @@ export function compose(...funcs) {
 
 export const $$observable = /* #__PURE__ */ (() =>
   (typeof Symbol === 'function' && Symbol.observable) || '@@observable')()
+
+/**
+   *
+   * @param {any} a
+   * @param {any} b
+   * @return {boolean}
+   */
+export function isEqual(a, b) {
+  if (typeof a === 'object' && typeof b === 'object') {
+    return JSON.stringify(a) === JSON.stringify(b)
+  }
+  return a === b;
+}

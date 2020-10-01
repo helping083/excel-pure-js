@@ -14,9 +14,9 @@ export class ExcelComponent extends DomListener {
     this.name = options.name;
     this.emitter = options.emitter;
     this.store = options.store;
-    this.prepare();
+    this.subscribe = options.subscribe || [];
     this.unsubscribers = [];
-    this.storeSub = null;
+    this.prepare();
   }
 
   /**
@@ -53,7 +53,6 @@ export class ExcelComponent extends DomListener {
   destroy() {
     this.removeDomListeners();
     this.unsubscribers.forEach(unsub => unsub());
-    this.storeSub.unsubscribe();
   }
 
   /**
@@ -86,10 +85,18 @@ export class ExcelComponent extends DomListener {
   }
 
   /**
-  * @param {function} fn
-  * @return {void}
-  */
-  $subscribe(fn) {
-    this.storeSub = this.store.subscribe(fn);
+  * tracks subscribed state changes
+   *@abstract
+   */
+  storeChanged() {
+
+  }
+
+  /**
+   * @param {string} key
+   * @return {boolean}
+   */
+  isWatching(key) {
+    return this.subscribe.includes(key)
   }
 }

@@ -75,7 +75,7 @@ export default function createStore(
       )
     }
 
-    return currentState;
+    return JSON.parse(JSON.stringify(currentState));
   }
 
   /**

@@ -16,6 +16,7 @@ class Formula extends ExcelComponent {
     super($root, {
       name: FORMULA.name,
       listeners: ['input', 'keydown'],
+      subscribe: ['currentText'],
       ...options,
     })
   }
@@ -37,9 +38,14 @@ class Formula extends ExcelComponent {
     this.$on('table:select', ($cell)=>{
       this.$formula.text = $cell.text;
     })
-    this.$on('table:input', (target)=>{
-      this.$formula.text = target.text;
-    });
+  }
+
+  /**
+   * @override
+   * @param {object} changes
+   */
+  storeChanged({currentText}) {
+    this.$formula.text = currentText;
   }
 
   /**
@@ -64,23 +70,5 @@ class Formula extends ExcelComponent {
       this.$emit('formula:enter');
     }
   }
-
-  // /**
-  // * @param  {Event} e event object
-  // * @return {void} input listener
-  // */
-  // myFunction = (e) => {
-  //   // eslint-disable-next-line no-invalid-this
-  //   console.log(this);
-  // }
-  // /**
-  // * @override
-  // * @return {void} input listener
-  // */
-  // init() {
-  //   // super.init();
-  //   // $.event('.info', 'click', this.myFunction);
-  //   $('.info').on('click', this.myFunction);
-  // }
 }
 export default Formula;

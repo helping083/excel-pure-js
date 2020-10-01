@@ -17,14 +17,16 @@ import {TABLE, DEFAULT_WIDTH, DEFAULT_HEIGHT} from './constants';
 */
 function toCell(state, row) {
   return function(_, col) {
+    const id = `${row}:${col}`
+    const data = state.dataState[id];
     return `
     <div 
       class="cell" 
       contenteditable="true" 
       data-type="${TABLE.type.CELL}"
-      style="width: ${getWidth(state, col)}"
+      style="width: ${getWidth(state.colState, col)}"
       data-col="${col}" 
-      data-id="${row}:${col}"></div>`
+      data-id="${id}">${data||''}</div>`
   }
 }
 
@@ -89,7 +91,6 @@ function toChar(_, index) {
 }
 
 /**
- *
  * @param {object} state
  * @param {number} index
  * @return {string}
@@ -143,7 +144,7 @@ export function createTable(rowsCount = 10, colsCount = 10, state = {}) {
     const cells = new Array(colsCount)
         .fill('')
         // .map(createCell)
-        .map(toCell(state.colState, i))
+        .map(toCell(state, i))
         .join('')
     rows.push(createRow(i + 1, cells, state.rowState))
   }

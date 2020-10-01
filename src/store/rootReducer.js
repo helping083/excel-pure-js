@@ -1,4 +1,5 @@
 import {TABLE_RESIZE} from '@/store/types';
+import {CHANGE_TEXT} from './types';
 /**
  * root store of our app
  * @param {object} state
@@ -14,6 +15,10 @@ export function rootReducer(state, action) {
       prevState = state[field] || {};
       prevState[action.data.id] = action.data.value;
       return {...state, [field]: prevState}
+    case CHANGE_TEXT:
+      prevState = state['dataState'] || {}
+      prevState[action.data.id] = action.data.value
+      return {...state, currentText: action.data.value, dataState: prevState}
     default: return state
   }
 }
