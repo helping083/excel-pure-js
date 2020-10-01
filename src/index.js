@@ -7,7 +7,7 @@ import applyMiddleware from './middlewares';
 import storeCreate from '@core/storeCreate';
 
 // const store = createStore(rootReducer, storage('excel-state'))
-const store = storeCreate(rootReducer, storage('excel-state'), applyMiddleware);
+const store = storeCreate(rootReducer, storage('extate'), applyMiddleware);
 store.subscribe(state => {
   storage('excel-state', state)
 })
