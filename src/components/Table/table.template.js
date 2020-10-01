@@ -56,10 +56,12 @@ function createCol({col, index, width}) {
  * generates row markup
  */
 function createRow(index, content) {
+  const dataRow = index ? `data-row="${index}"` :'';
   const resizer = index ?
     `<div class="row-resize" data-resize=${TABLE.dataResize.ROW}></div>` : '';
+
   return `
-     <div class="row" data-type="resizable">
+     <div class="row" data-type="resizable" ${dataRow}>
       <div class="row-info">
         ${index ? index : ''}
         ${resizer}
@@ -110,8 +112,6 @@ function withWidthFrom(state) {
  * generates table markup
  */
 export function createTable(rowsCount = 10, colsCount = 10, state = {}) {
-  console.log('create store', state);
-  // const colsCount = TABLE.CODES.Z - TABLE.CODES.A + 1;
   const rows = [];
   const cols = new Array(colsCount)
       .fill('')
