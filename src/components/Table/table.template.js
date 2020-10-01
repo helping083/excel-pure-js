@@ -1,4 +1,4 @@
-import {TABLE, DEFAULT_WIDTH} from './constants';
+import {TABLE, DEFAULT_WIDTH, DEFAULT_HEIGHT} from './constants';
 // /**
 //  * @param {any} _
 //  * @param {number} col
@@ -22,7 +22,7 @@ function toCell(state, row) {
       class="cell" 
       contenteditable="true" 
       data-type="${TABLE.type.CELL}"
-      style="width: ${getWidth(state.colState, col)}"
+      style="width: ${getWidth(state, col)}"
       data-col="${col}" 
       data-id="${row}:${col}"></div>`
   }
@@ -52,16 +52,23 @@ function createCol({col, index, width}) {
 /**
  * @param {number} index
  * @param {any} content
+ * @param {object} state
  * @return {string}
  * generates row markup
  */
-function createRow(index, content) {
+function createRow(index, content, state) {
+  const height = getHeight(state, index);
   const dataRow = index ? `data-row="${index}"` :'';
   const resizer = index ?
     `<div class="row-resize" data-resize=${TABLE.dataResize.ROW}></div>` : '';
 
   return `
-     <div class="row" data-type="resizable" ${dataRow}>
+     <div 
+      class="row" 
+      data-type="resizable"
+      style="height: ${height}"
+      ${dataRow}
+      >
       <div class="row-info">
         ${index ? index : ''}
         ${resizer}
@@ -93,6 +100,17 @@ function getWidth(state, index) {
 }
 
 /**
+ *
+ * @param {object} state
+ * @param {number} index
+ * @return {string}
+ * utils function which calculates a width of a col
+ */
+function getHeight(state, index) {
+  return `${(state[index] || DEFAULT_HEIGHT)}px`;
+}
+
+/**
  * @param {object} state
  * @return {function}
  */
@@ -120,14 +138,14 @@ export function createTable(rowsCount = 10, colsCount = 10, state = {}) {
       .map(createCol)
       .join('')
 
-  rows.push(createRow(null, cols))
+  rows.push(createRow(null, cols, {}))
   for (let i = 0; i < rowsCount; i++) {
     const cells = new Array(colsCount)
         .fill('')
         // .map(createCell)
-        .map(toCell(state, i))
+        .map(toCell(state.colState, i))
         .join('')
-    rows.push(createRow(i + 1, cells))
+    rows.push(createRow(i + 1, cells, state.rowState))
   }
   return rows.join('')
 }

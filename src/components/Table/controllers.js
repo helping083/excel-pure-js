@@ -62,7 +62,8 @@ export function resizeHandler($root, event, original_mouse_y) {
       }
       resolve({
         value,
-        id: type === 'col' ? $parent.data.col: null,
+        type,
+        id: $parent.data[type],
       })
       $resizer.css({
         opacity: 0,
