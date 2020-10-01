@@ -1,5 +1,5 @@
 import {ExcelComponent} from '@core/ExcelComponent';
-import {HEADER} from './constants';
+import {HEADER, headerTemplate} from './constants';
 import {$} from '@core/dom';
 /**
  *
@@ -21,7 +21,7 @@ class Header extends ExcelComponent {
   * @return {string} return html template
   */
   toHTML() {
-    return HEADER.headerHtml;
+    return headerTemplate(this.$root);
   }
 
   /**
