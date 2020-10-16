@@ -5,9 +5,7 @@ import {isEqual} from '@core/utils';
  */
 class StoreSubscriber {
   /**
-   *
    * @param {object} store app's state
-   *
    */
   constructor(store) {
     this.store = store;
@@ -16,7 +14,6 @@ class StoreSubscriber {
   }
 
   /**
-   *
    * @param {array} components
    * @return {void}
    */

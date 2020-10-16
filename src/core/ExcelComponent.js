@@ -70,6 +70,7 @@ export class ExcelComponent extends DomListener {
    * @param {event} event
    * @param {function} fn
    * subscribes to events based on the observable pattern
+   * it replaces this.emitter.subscribe
   */
   $on(event, fn) {
     const unsub = this.emitter.subscribe(event, fn);
